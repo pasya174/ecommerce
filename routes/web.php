@@ -13,6 +13,27 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get('', function () {
+    return view('website.pages.index');
+})->name('home');
+
+Route::get('catalogue', function () {
+    return view('website.pages.catalogues');
+})->name('catalogue');
+
+Route::get('cart', function () {
+    return view('website.pages.cart');
+})->name('cart');
+
+Route::get('checkout', function () {
+    return view('website.pages.checkout');
+})->name('checkout');
+
+
+Route::group([
+    'prefix' => 'admin'
+], function () {
+    Route::get('', function () {
+        return view('administator.pages.index');
+    });
 });
