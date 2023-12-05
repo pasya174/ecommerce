@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\ProductsController;
+use App\Http\Controllers\CategoriesController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -43,5 +44,14 @@ Route::group([
         Route::post('add-detail', [ProductsController::class, 'add_detail'])->name('product.add-detail');
         Route::post('delete', [ProductsController::class, 'delete'])->name('product.delete');
         Route::post('delete-detail', [ProductsController::class, 'delete_detail'])->name('product-detail.delete');
+    });
+
+    Route::group([
+        'prefix' => 'categories'
+    ], function () {
+        Route::get('', [CategoriesController::class, 'index'])->name('category.index');
+        Route::post('', [CategoriesController::class, 'store'])->name('category.store');
+        Route::post('update', [CategoriesController::class, 'update'])->name('category.update');
+        Route::post('delete', [CategoriesController::class, 'delete'])->name('category.delete');
     });
 });
