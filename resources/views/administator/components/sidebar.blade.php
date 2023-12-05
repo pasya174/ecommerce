@@ -23,16 +23,6 @@
             <div class="menu_section">
                 <h3>General</h3>
                 <ul class="nav side-menu">
-                    {{-- <li><a></a><i class="fa fa-home"></i> Categories <span class="fa fa-chevron-down"></span></a>
-                        <ul class="nav child_menu">
-                            <li>
-                                <a href="index.html">Create Categories</a>
-                            </li>
-                            <li><a href="index2.html">Baju</a></li>
-                            <li><a href="index3.html">Celana</a></li>
-                        </ul>
-                    </li> --}}
-                    {{-- <li><a href="form.html">General Form</a></li> --}}
                     <li><a><i class="fa fa-edit"></i> Forms <span class="fa fa-chevron-down"></span></a>
                         <ul class="nav child_menu">
                             <li><a href="form_advanced.html">Advanced Components</a></li>

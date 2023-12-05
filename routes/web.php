@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\ProductsController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -33,7 +34,14 @@ Route::get('checkout', function () {
 Route::group([
     'prefix' => 'admin'
 ], function () {
-    Route::get('', function () {
-        return view('administator.pages.index');
+    Route::group([
+        'prefix' => 'product',
+    ], function () {
+        Route::get('', [ProductsController::class, 'index'])->name('product.index');
+        Route::post('', [ProductsController::class, 'store'])->name('product.store');
+        Route::post('update', [ProductsController::class, 'update'])->name('product.update');
+        Route::post('add-detail', [ProductsController::class, 'add_detail'])->name('product.add-detail');
+        Route::post('delete', [ProductsController::class, 'delete'])->name('product.delete');
+        Route::post('delete-detail', [ProductsController::class, 'delete_detail'])->name('product-detail.delete');
     });
 });
