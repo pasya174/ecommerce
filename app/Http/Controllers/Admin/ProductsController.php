@@ -7,6 +7,8 @@ use App\Models\Categories;
 use App\Models\ProductDetails;
 use App\Models\Products;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use RealRashid\SweetAlert\Facades\Alert;
 
@@ -17,7 +19,7 @@ class ProductsController extends Controller
         $categories = Categories::all();
         $data = Products::all();
         $data_detail = ProductDetails::with('product')->get();
-        // dd($data_detail);
+        // dd($datzla_detail);
         return view('administator.pages.products', compact(
             'categories',
             'data',
@@ -35,12 +37,18 @@ class ProductsController extends Controller
             'category_id' => 'required|exists:categories,id',
             'size' => 'required',
             'stock' => 'required',
+            'image' => 'required|image|mimes:jpeg,png,jpg',
         ]);
 
         if ($validator->fails()) {
             Alert::toast($validator->messages()->all(), 'error');
             return back()->withInput();
         }
+
+        $image = $request->file('image');
+        $image_name = bin2hex(time() . '-admin-' . $request->description) . '.' . $image->getClientOriginalExtension();
+
+        Storage::putFileAs('public/uploads/images/products/', $image, $image_name);
 
         unset($request['_token']);
 
@@ -49,8 +57,10 @@ class ProductsController extends Controller
         $data->save();
 
         $data_detail = new ProductDetails();
+
         $data_detail->fill($request->all());
         $data_detail->product_id = $data->id;
+        $data_detail->image = $image_name;
         $data_detail->save();
 
         Alert::toast('Success Add Product', 'success');
@@ -68,10 +78,12 @@ class ProductsController extends Controller
             'category_id' => 'required|exists:categories,id',
             'size' => 'required',
             'stock' => 'required',
+            'image_product' => 'nullable|image|mimes:jpeg,png,jpg'
         ]);
 
         if ($validator->fails()) {
             Alert::toast($validator->messages()->all(), 'error');
+            // dd($validator->messages()->all(),  $request->all());
             return back()->withInput();
         }
 
@@ -83,6 +95,16 @@ class ProductsController extends Controller
 
         $data_detail = ProductDetails::where('product_id', $data->id)->first();
         $data_detail->fill($request->all());
+        if ($request->hasFile('image_product')) {
+
+            $image = $request->file('image_product');
+            $image_name = bin2hex(time() . '-admin-' . $data->description) . '.' . $image->getClientOriginalExtension();
+
+            File::delete(public_path("/storage/uploads/images/products/" . $data_detail->image));
+            Storage::putFileAs('public/uploads/images/products/', $image, $image_name);
+
+            $data_detail->image = $image_name;
+        }
         $data_detail->save();
 
         Alert::toast('Success Update Product', 'success');
@@ -100,12 +122,18 @@ class ProductsController extends Controller
             'category_id' => 'required|exists:categories,id',
             'size' => 'required',
             'stock' => 'required',
+            'image' => 'required|image|mimes:jpeg,png,jpg',
         ]);
 
         if ($validator->fails()) {
             Alert::toast($validator->messages()->all(), 'error');
             return back()->withInput();
         }
+
+        $image = $request->file('image');
+        $image_name = bin2hex(time() . '-admin-' . $request->description) . '.' . $image->getClientOriginalExtension();
+
+        Storage::putFileAs('public/uploads/images/products/', $image, $image_name);
 
         unset($request['_token']);
 
@@ -119,10 +147,11 @@ class ProductsController extends Controller
             $data_detail = new ProductDetails();
             $data_detail->fill($request->all());
             $data_detail->product_id = $request->id;
+            $data_detail->image = $image_name;
             $data_detail->save();
         }
-
-        if ($check_data->stock > $request->stock) {
+        // dd($request->stock, $check_data->stock);
+        if (!empty($check_data) && $check_data->stock > $request->stock) {
             $check_data->stock = $request->stock;
             $check_data->save();
         }
@@ -147,7 +176,12 @@ class ProductsController extends Controller
         }
 
         Products::where('id', $request->id)->delete();
-        ProductDetails::where('product_id', $request->id)->delete();
+        $data_detail = ProductDetails::where('product_id', $request->id)->get();
+        foreach ($data_detail as $item) {
+            File::delete(public_path("/storage/uploads/images/products/" . $item->image));
+            $item->delete();
+        }
+
 
         Alert::toast('Success Delete Product', 'success');
         return back();
@@ -164,7 +198,10 @@ class ProductsController extends Controller
             return back();
         }
 
-        ProductDetails::where('id', $request->id)->delete();
+        $data_detail = ProductDetails::where('id', $request->id)->first();
+        File::delete(public_path("/storage/uploads/images/products/" . $data_detail->image));
+
+        $data_detail->delete();
 
         Alert::toast('Success Delete Detail Product', 'success');
         return back();

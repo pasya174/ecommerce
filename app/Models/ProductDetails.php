@@ -20,6 +20,7 @@ class ProductDetails extends Model
         'size',
         'color',
         'stock',
+        'image',
         'created_at',
         'updated_at',
     ];

@@ -71,7 +71,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form action="{{ route('product.store') }}" method="post">
+                    <form action="{{ route('product.store') }}" method="post" enctype="multipart/form-data">
                         @csrf
                         <div class="form-group mb-3">
                             <label for="name">Name:</label>
@@ -96,6 +96,11 @@
                             <label for="stock">Stock:</label>
                             <input type="number" class="form-control mt-1" name="stock" placeholder="stock" required
                                 value="{{ old('stock') }}">
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="image">Image Products:</label>
+                            <input type="file" class="form-control mt-1" name="image" placeholder="image" required
+                                value="{{ old('image') }}">
                         </div>
                         <div class="form-group mb-3">
                             <label for="category_id">Category:</label>
@@ -205,7 +210,7 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form action="{{ route('product.add-detail') }}" method="post">
+                        <form action="{{ route('product.add-detail') }}" method="post" enctype="multipart/form-data">
                             @csrf
                             <div class="form-group mb-3">
                                 <label for="name">Name:</label>
@@ -232,6 +237,11 @@
                                 <label for="stock">Stock:</label>
                                 <input type="number" class="form-control mt-1" name="stock" placeholder="stock"
                                     required value="{{ old('stock') }}">
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="image">Image Products:</label>
+                                <input type="file" class="form-control mt-1" name="image" placeholder="image"
+                                    required value="{{ old('image') }}">
                             </div>
                             <div class="form-group mb-3">
                                 <label for="category_id">Category:</label>
@@ -278,7 +288,7 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form action="{{ route('product.update') }}" method="post">
+                        <form action="{{ route('product.update') }}" method="post" enctype="multipart/form-data">
                             @csrf
                             <div class="form-group mb-3">
                                 <label for="name">Name:</label>
@@ -304,6 +314,11 @@
                                 <label for="stock">Stock:</label>
                                 <input type="number" class="form-control mt-1" name="stock" placeholder="stock"
                                     required value="{{ $item->stock }}">
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="image_product">Image Products:</label>
+                                <input type="file" class="form-control mt-1" name="image_product" placeholder="image"
+                                    required value="{{ old('image_product') }}">
                             </div>
                             <div class="form-group mb-3">
                                 <label for="category_id">Category:</label>

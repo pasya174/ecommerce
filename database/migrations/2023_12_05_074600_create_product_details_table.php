@@ -19,6 +19,7 @@ return new class extends Migration
             $table->foreign('category_id')->references('id')->on('categories');
             $table->string('size');
             $table->string('color');
+            $table->longText('image')->nullable();
             $table->integer('stock')->default(0);
             $table->softDeletes();
             $table->timestamps();

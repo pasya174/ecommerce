@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\ProductsController;
 use App\Http\Controllers\CategoriesController;
+use App\Http\Controllers\Main\HomeController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,21 +16,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('', function () {
-    return view('website.pages.index');
-})->name('home');
-
-Route::get('catalogue', function () {
-    return view('website.pages.catalogues');
-})->name('catalogue');
-
-Route::get('cart', function () {
-    return view('website.pages.cart');
-})->name('cart');
-
-Route::get('checkout', function () {
-    return view('website.pages.checkout');
-})->name('checkout');
+Route::get('', [HomeController::class, 'index'])->name('home');
+Route::get('catalogue', [HomeController::class, 'catalogues'])->name('catalogue');
+Route::get('cart', [HomeController::class, 'cart'])->name('cart');
+Route::get('checkout', [HomeController::class, 'checkout'])->name('checkout');
 
 
 Route::group([
