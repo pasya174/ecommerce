@@ -40,6 +40,7 @@
 </head>
 
 <body class="js">
+    @include('sweetalert::alert')
     {{-- @include('website.components.loader') --}}
     @include('website.components.header')
 
@@ -64,6 +65,8 @@
     <script src="{{ asset('assets/js/onepage-nav.min.js') }}"></script>
     <script src="{{ asset('assets/js/easing.js') }}"></script>
     <script src="{{ asset('assets/js/active.js') }}"></script>
+
+    @stack('script')
 </body>
 
 </html>

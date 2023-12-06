@@ -16,17 +16,17 @@ class TransactionsDetailsSeeder extends Seeder
         DB::table('transaction_details')->insert([
             [
                 'transaction_id' => 1,
-                'product_id' => 1,
+                'product_details_id' => 1,
                 'quantity' => 10,
             ],
             [
                 'transaction_id' => 1,
-                'product_id' => 2,
+                'product_details_id' => 2,
                 'quantity' => 5,
             ],
             [
                 'transaction_id' => 1,
-                'product_id' => 2,
+                'product_details_id' => 3,
                 'quantity' => 7,
             ],
         ]);

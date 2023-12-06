@@ -16,7 +16,7 @@ class TransactionDetails extends Model
 
     protected $fillable = [
         'transaction_id',
-        'product_id',
+        'product_details_id',
         'quantity',
         'created_at',
         'updated_at',
@@ -27,8 +27,8 @@ class TransactionDetails extends Model
         return $this->hasMany(Transactions::class, 'id', 'transaction_id');
     }
 
-    public function product()
+    public function product_details()
     {
-        return $this->hasMany(Products::class, 'id', 'product_id');
+        return $this->hasMany(ProductDetails::class, 'id', 'product_details_id');
     }
 }

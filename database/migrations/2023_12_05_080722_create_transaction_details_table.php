@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('transaction_id');
             $table->foreign('transaction_id')->references('id')->on('transactions');
-            $table->unsignedBigInteger('product_id');
-            $table->foreign('product_id')->references('id')->on('products');
+            $table->unsignedBigInteger('product_details_id');
+            $table->foreign('product_details_id')->references('id')->on('product_details');
             $table->integer('quantity');
             $table->softDeletes();
             $table->timestamps();

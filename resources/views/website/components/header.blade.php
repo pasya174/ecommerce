@@ -11,40 +11,49 @@
                             <li><i class="ti-email"></i> support@ecommerce.com</li>
                         </ul>
                     </div> --}}
-                    <!--/ End Top Left -->
                 </div>
                 <div class="col-lg-8 col-md-12 col-12">
-                    <!-- Top Right -->
                     <div class="right-content">
                         <ul class="list-main">
-                            <li><i class="ti-user"></i> <a href="#">My Poin: 10</a></li>
+                            @if (!empty(auth()->user()))
+                                <li><i class="ti-user"></i> <a href="#">My Poin: {{ auth()->user()->points }}</a>
+                                </li>
+                            @endif
                             <li><i class="ti-power-off"></i> <a href="#">
                                     <div class="sinlge-bar shopping">
                                         <a href="#" class="single-icon"> <span
-                                                class="total-count">Login</span></a>
-                                        <!-- Shopping Item -->
-                                        <div class="shopping-item">
-                                            <form action="" method="post">
-                                                <div class="form-group">
-                                                    <label for="email">Email</label>
-                                                    <input type="email" id="email" name="email"
-                                                        class="form-control">
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="password">Password</label>
-                                                    <input type="text" id="password" name="password"
-                                                        class="form-control">
-                                                </div>
-                                                <button type="submit" class="btn btn-primary">Login</button>
-                                            </form>
-                                        </div>
-                                        <!--/ End Shopping Item -->
+                                                class="total-count">{{ !empty(auth()->user()) ? 'Hallo, ' . auth()->user()->name : 'Login' }}</span></a>
+                                        @if (empty(auth()->user()))
+                                            <div class="shopping-item">
+                                                <form action="{{ route('post-login.user') }}" method="post">
+                                                    @csrf
+                                                    <div class="form-group">
+                                                        <label for="email">Email</label>
+                                                        <input type="email" id="email" name="email"
+                                                            class="form-control">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="password">Password</label>
+                                                        <input type="text" id="password" name="password"
+                                                            class="form-control">
+                                                    </div>
+                                                    <button type="submit" class="btn btn-primary">Login</button>
+                                                </form>
+                                            </div>
+                                        @else
+                                            <div class="shopping-item">
+                                                <form action="{{ route('logout') }}" method="post">
+                                                    @csrf
+                                                    <center>
+                                                        <button type="submit" class="btn btn-primary">Logout</button>
+                                                    </center>
+                                                </form>
+                                            </div>
+                                        @endif
                                     </div>
                                 </a></li>
-
                         </ul>
                     </div>
-                    <!-- End Top Right -->
                 </div>
             </div>
         </div>
@@ -65,53 +74,51 @@
                 <div class="col-lg-8 col-md-7 col-12">
                 </div>
                 <div class="col-lg-2 col-md-3 col-12">
-                    <div class="right-bar">
-                        <!-- Search Form -->
-                        <div class="sinlge-bar">
-                            <a href="#" class="single-icon"><i class="fa fa-heart-o" aria-hidden="true"></i></a>
-                        </div>
-                        <div class="sinlge-bar">
-                            <a href="#" class="single-icon"><i class="fa fa-user-circle-o"
-                                    aria-hidden="true"></i></a>
-                        </div>
-                        <div class="sinlge-bar shopping">
-                            <a href="#" class="single-icon"><i class="ti-bag"></i> <span
-                                    class="total-count">2</span></a>
-                            <!-- Shopping Item -->
-                            <div class="shopping-item">
-                                <div class="dropdown-cart-header">
-                                    <span>2 Items</span>
-                                    <a href="#">View Cart</a>
-                                </div>
-                                <ul class="shopping-list">
-                                    <li>
-                                        <a href="#" class="remove" title="Remove this item"><i
-                                                class="fa fa-remove"></i></a>
-                                        <a class="cart-img" href="#"><img src="https://via.placeholder.com/70x70"
-                                                alt="#"></a>
-                                        <h4><a href="#">Woman Ring</a></h4>
-                                        <p class="quantity">1x - <span class="amount">$99.00</span></p>
-                                    </li>
-                                    <li>
-                                        <a href="#" class="remove" title="Remove this item"><i
-                                                class="fa fa-remove"></i></a>
-                                        <a class="cart-img" href="#"><img src="https://via.placeholder.com/70x70"
-                                                alt="#"></a>
-                                        <h4><a href="#">Woman Necklace</a></h4>
-                                        <p class="quantity">1x - <span class="amount">$35.00</span></p>
-                                    </li>
-                                </ul>
-                                <div class="bottom">
-                                    <div class="total">
-                                        <span>Total</span>
-                                        <span class="total-amount">$134.00</span>
+                    @if (!empty(auth()->user()))
+                        <div class="right-bar">
+                            <div class="sinlge-bar shopping">
+                                <a href="#" class="single-icon"><i class="ti-bag"></i> <span
+                                        class="total-count">{{ count($cart) }}</span></a>
+                                <!-- Shopping Item -->
+                                <div class="shopping-item">
+                                    <div class="dropdown-cart-header">
+                                        <span>{{ count($cart) }} Items</span>
+                                        <a href="{{ route('cart') }}">View Cart</a>
                                     </div>
-                                    <a href="checkout.html" class="btn animate">Checkout</a>
+                                    <ul class="shopping-list">
+                                        @php
+                                            $array_total = [];
+                                        @endphp
+                                        @foreach ($cart as $item)
+                                            <li>
+                                                <a href="#" class="remove" title="Remove this item"><i
+                                                        class="fa fa-remove"></i></a>
+                                                <a class="cart-img" href="#"><img
+                                                        src="{{ asset('storage/uploads/images/products/') . '/' . $item->image }}"
+                                                        height="70" width="70" alt="#"></a>
+                                                <h4><a href="#">{{ $item->name }}</a></h4>
+                                                <p class="quantity">{{ $item->quantity }}x - <span
+                                                        class="amount">{{ format_rupiah($item->price) }}</span></p>
+                                            </li>
+                                            @php
+                                                $total = $item->price * $item->quantity;
+                                                array_push($array_total, $item->price * $item->quantity);
+                                            @endphp
+                                        @endforeach
+                                    </ul>
+                                    <div class="bottom">
+                                        <div class="total">
+                                            <span>Total</span>
+                                            <span
+                                                class="total-amount">{{ format_rupiah(array_sum($array_total)) }}</span>
+                                        </div>
+                                        <a href="checkout.html" class="btn animate">Checkout</a>
+                                    </div>
                                 </div>
+                                <!--/ End Shopping Item -->
                             </div>
-                            <!--/ End Shopping Item -->
                         </div>
-                    </div>
+                    @endif
                 </div>
             </div>
         </div>

@@ -19,6 +19,7 @@ class Transactions extends Model
         'total_amount',
         'points_earned',
         'points_used',
+        'status',
         'created_at',
         'updated_at',
     ];

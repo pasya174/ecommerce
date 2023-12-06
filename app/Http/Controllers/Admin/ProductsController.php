@@ -17,9 +17,8 @@ class ProductsController extends Controller
     public function index()
     {
         $categories = Categories::all();
-        $data = Products::all();
+        $data = Products::orderBy('created_at', 'asc')->get();
         $data_detail = ProductDetails::with('product')->get();
-        // dd($datzla_detail);
         return view('administator.pages.products', compact(
             'categories',
             'data',

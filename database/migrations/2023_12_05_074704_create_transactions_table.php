@@ -15,9 +15,10 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
-            $table->decimal('total_amount', 10, 2);
+            $table->decimal('total_amount', 10, 2)->nullable();
             $table->integer('points_earned')->default(0);
             $table->integer('points_used')->default(0);
+            $table->string('status')->default(0);
             $table->softDeletes();
             $table->timestamps();
         });

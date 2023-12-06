@@ -27,7 +27,6 @@
                                         style="width:100%">
                                         <thead>
                                             <tr>
-                                                <th>No</th>
                                                 <th>Name</th>
                                                 <th>Price</th>
                                                 <th>Action</th>
@@ -36,7 +35,6 @@
                                         <tbody>
                                             @foreach ($data as $item)
                                                 <tr>
-                                                    <td>{{ $loop->iteration }}</td>
                                                     <td>{{ $item->name }}</td>
                                                     <td>{{ $item->price }}</td>
                                                     <td><button class="btn btn-outline-info btn-sm" data-toggle="modal"

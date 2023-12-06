@@ -6,24 +6,18 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Products extends Model
+class Header extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $table = 'products';
+    protected $table = 'headers';
     protected $primaryKey = 'id';
     protected $guarded = [];
 
     protected $fillable = [
         'name',
-        'description',
-        'price',
+        'image',
         'created_at',
         'updated_at',
     ];
-
-    public function product_detail()
-    {
-        return $this->belongsTo(ProductDetails::class);
-    }
 }
