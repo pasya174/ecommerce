@@ -126,12 +126,12 @@
                                 <h2>CART TOTALS</h2>
                                 <div class="content">
                                     <ul>
-                                        <li>Sub Total<span>{{ format_rupiah($data->total_amount) }}</span></li>
+                                        <li>Sub Total<span>{{ format_rupiah($total_amount) }}</span></li>
                                         <li>(-) Point
-                                            Use<span>{{ format_rupiah(($data->total_amount * $data->temp_points_used) / 100) }}</span>
+                                            Use<span>{{ format_rupiah(($total_amount * $data->temp_points_used) / 100) }}</span>
                                         </li>
                                         <li class="last">
-                                            Total<span>{{ format_rupiah($data->total_amount - ($data->total_amount * $data->temp_points_used) / 100) }}</span>
+                                            Total<span>{{ format_rupiah($total_amount - ($total_amount * $data->temp_points_used) / 100) }}</span>
                                         </li>
                                     </ul>
                                 </div>
@@ -154,6 +154,9 @@
                             <div class="single-widget get-button">
                                 <div class="content">
                                     <div class="button">
+                                        <input type="number"
+                                            value="{{ $total_amount - ($total_amount * $data->temp_points_used) / 100 }}"
+                                            name="total_amount" hidden>
                                         <button type="submit" class="btn">proceed to checkout</button>
                                     </div>
                                 </div>

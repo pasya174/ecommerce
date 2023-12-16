@@ -3,11 +3,13 @@
 namespace App\Http\Controllers\Main;
 
 use App\Http\Controllers\Controller;
+use App\Models\TransactionDetails;
 use App\Models\Transactions;
 use App\Models\User;
 use App\Traits\MyTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Validator;
 use RealRashid\SweetAlert\Facades\Alert;
@@ -27,7 +29,22 @@ class CheckoutController extends Controller
 
         $data = Transactions::where('user_id', Auth::user()->id)->where('status', 0)->first();
         $province = collect(Http::get('https://emsifa.github.io/api-wilayah-indonesia/api/provinces.json')->json());
-        return view('website.pages.checkout', compact('active', 'cart', 'province', 'data'));
+
+        $array_transaction_detail = array();
+
+        $total_amount = DB::table('transaction_details as td')
+            ->join('product_details as pd', 'pd.id', '=', 'td.product_details_id')
+            ->join('products as p', 'p.id', '=', 'pd.product_id')
+            ->select('td.quantity', 'p.price')
+            ->get();
+
+        foreach ($total_amount as $item) {
+            array_push($array_transaction_detail, $item->quantity * $item->price);
+        }
+
+        $total_amount = array_sum($array_transaction_detail);
+
+        return view('website.pages.checkout', compact('active', 'cart', 'province', 'data', 'total_amount'));
     }
 
     public function city($id)
@@ -75,22 +92,22 @@ class CheckoutController extends Controller
         unset($request['_token']);
         $data = Transactions::findOrFail($request->id);
         $data->fill($request->all());
-
         if ($data->temp_points_used == 20) {
-            $data->points_used -= 500;
+            $data->points_used = 500;
         }
 
         if ($data->temp_points_used == 30) {
-            $data->points_used -= 3000;
+            $data->points_used = 3000;
         }
 
         if ($data->temp_points_used == 50) {
-            $data->points_used -= 5000;
+            $data->points_used = 5000;
         }
         // $data->status = 1;
         $data->save();
 
         $user = User::where('email', $data->email)->first();
+        $user->points += $data->total_amount / 100;
         if ($data->temp_points_used == 20) {
             $user->points -= 500;
         }
