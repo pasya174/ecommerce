@@ -58,22 +58,24 @@
                                         </div>
                                     </div>
                                     <div class="quantity">
+                                        <!-- Input Order -->
                                         <div class="input-group">
-                                            <div class="button minus">
+                                            {{-- <div class="button minus">
                                                 <button type="button" class="btn btn-primary btn-number"
-                                                    disabled="disabled" data-type="minus" data-field="quantity">
+                                                    disabled="disabled" data-type="minus" data-field="quant[1]">
                                                     <i class="ti-minus"></i>
                                                 </button>
-                                            </div>
-                                            <input type="text" name="quantity" class="input-number" data-min="1"
+                                            </div> --}}
+                                            <input type="number" name="quantity" class="input-number" data-min="1"
                                                 data-max="1000" value="1">
-                                            <div class="button plus">
+                                            {{-- <div class="button plus">
                                                 <button type="button" class="btn btn-primary btn-number"
-                                                    data-type="plus" data-field="quantity">
+                                                    data-type="plus" data-field="quant[1]">
                                                     <i class="ti-plus"></i>
                                                 </button>
-                                            </div>
+                                            </div> --}}
                                         </div>
+                                        <!--/ End Input Order -->
                                     </div>
                                     <div class="add-to-cart">
                                         <button type="submit" class="btn">Add to cart</button>
@@ -88,3 +90,46 @@
     </div>
     </div>
 @endforeach
+
+<div class="modal fade" id="modalRegister" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span class="ti-close" aria-hidden="true"></span>
+                </button>
+            </div>
+            <form action="{{ route('register') }}" method="post">
+                @csrf
+                <div class="modal-body">
+                    <div class="quickview-content">
+                        <h2>Register</h2>
+                        <div class="from-group mt-4 mb-3">
+                            <label for="username">Username</label>
+                            <input type="text" class="form-control" id="username" name="username">
+                        </div>
+                        <div class="from-group mt-4 mb-3">
+                            <label for="first_name">First Name</label>
+                            <input type="text" class="form-control" id="first_name" name="first_name">
+                        </div>
+                        <div class="from-group mt-4 mb-3">
+                            <label for="last_name">Last Name</label>
+                            <input type="text" class="form-control" id="last_name" name="last_name">
+                        </div>
+                        <div class="from-group mt-4 mb-3">
+                            <label for="email">Email</label>
+                            <input type="email" class="form-control" id="email" name="email">
+                        </div>
+                        <div class="from-group mt-4">
+                            <label for="password">Password</label>
+                            <input type="text" class="form-control" id="password" name="password">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn">Add to cart</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

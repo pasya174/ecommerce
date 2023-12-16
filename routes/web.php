@@ -4,7 +4,12 @@ use App\Http\Controllers\Admin\ProductsController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoriesController;
 use App\Http\Controllers\HeaderController;
+use App\Http\Controllers\Main\CartController;
+use App\Http\Controllers\Main\CataloguesController;
+use App\Http\Controllers\Main\CheckoutController;
 use App\Http\Controllers\Main\HomeController;
+use App\Http\Controllers\Main\LeaderboardController;
+use App\Http\Controllers\TransactionController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -21,19 +26,26 @@ use Illuminate\Support\Facades\Route;
 Route::redirect('/iki', 'admin/product');
 
 Route::get('', [HomeController::class, 'index'])->name('home');
-Route::get('catalogue', [HomeController::class, 'catalogues'])->name('catalogue');
-Route::get('cart', [HomeController::class, 'cart'])->name('cart');
-Route::get('checkout', [HomeController::class, 'checkout'])->name('checkout');
-Route::post('add-cart', [HomeController::class, 'add_cart'])->name('add-cart');
-
-Route::get('add-quantity/{id}/{status}', [HomeController::class, 'add_quantity'])->name('add-quantity');
+Route::get('catalogue', [CataloguesController::class, 'index'])->name('catalogue');
+Route::get('cart', [CartController::class, 'index'])->name('cart');
+Route::post('cart-store', [TransactionController::class, 'cart_store'])->name('cart.store');
+Route::post('add-cart', [TransactionController::class, 'add_cart'])->name('add-cart');
+Route::get('add-quantity/{id}/{status}', [TransactionController::class, 'add_quantity'])->name('add-quantity');
 Route::get('delete-detail/{id}', [HomeController::class, 'delete_detail_transaction'])->name('delete-detail');
+Route::get('leaderboard', [LeaderboardController::class, 'index'])->name('leaderboard.index');
 
+Route::group([
+    'prefix' => 'checkout'
+], function () {
+    Route::get('', [CheckoutController::class, 'index'])->name('checkout');
+    Route::post('', [CheckoutController::class, 'store'])->name('checkout.store');
+});
 
 Route::group([
     'prefix' => 'auth'
 ], function () {
     Route::post('post-login-user', [AuthController::class, 'post_login_user'])->name('post-login.user');
+    Route::post('register', [AuthController::class, 'register'])->name('register');
     Route::post('logout', [AuthController::class, 'logout'])->name('logout');
 });
 
@@ -68,4 +80,13 @@ Route::group([
         Route::post('update', [HeaderController::class, 'update'])->name('header.update');
         Route::post('delete', [HeaderController::class, 'delete'])->name('header.delete');
     });
+});
+
+
+Route::group([
+    'prefix' => 'data'
+], function () {
+    Route::get('city/{id}', [CheckoutController::class, 'city']);
+    Route::get('district/{id}', [CheckoutController::class, 'district']);
+    Route::get('village/{id}', [CheckoutController::class, 'village']);
 });

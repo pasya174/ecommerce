@@ -16,21 +16,30 @@ class UserSeeder extends Seeder
     {
         DB::table('users')->insert([
             [
-                'name' => 'Anggi',
+                'username' => 'Anggi',
+                'first_name' => 'Anggi',
+                'last_name' => 'Ayu',
                 'email' => 'anggi@gmail.com',
                 'password' => Hash::make('anggi123'),
-                'points' => 10
+                'points' => 2000,
+                'total_points' => 2000
             ],
             [
-                'name' => 'Agus',
+                'username' => 'Agus',
+                'first_name' => 'Agus',
+                'last_name' => 'Wibowo',
                 'email' => 'agus@gmail.com',
                 'password' => Hash::make('agus123'),
-                'points' => 5
+                'points' => 900,
+                'total_points' => 900
             ], [
-                'name' => 'Angga',
+                'username' => 'Angga',
+                'first_name' => 'Angga',
+                'last_name' => 'Wijaya',
                 'email' => 'Angga@gmail.com',
-                'password' => Hash::make('anggi123'),
-                'points' => 0
+                'password' => Hash::make('angga123'),
+                'points' => 5000,
+                'total_points' => 5000
             ],
         ]);
     }

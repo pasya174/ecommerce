@@ -34,8 +34,19 @@
     <link rel="stylesheet" href="{{ asset('assets/css/reset.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/style.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/responsive.css') }}">
-
-
+    <style>
+        select {
+            border: 1px solid #ccc;
+            width: 220px;
+            display: inline-block;
+            height: 48px;
+            color: #333;
+            padding: 0px 20px;
+            border: none;
+            box-shadow: 0px 0px 5px #0000000a;
+        }
+    </style>
+    @stack('head')
 
 </head>
 
@@ -53,13 +64,16 @@
     <script src="{{ asset('assets/js/jquery-ui.min.js') }}"></script>
     <script src="{{ asset('assets/js/popper.min.js') }}"></script>
     <script src="{{ asset('assets/js/bootstrap.min.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous">
+    </script>
     <script src="{{ asset('assets/js/colors.js') }}"></script>
     <script src="{{ asset('assets/js/slicknav.min.js') }}"></script>
     <script src="{{ asset('assets/js/owl-carousel.js') }}"></script>
     <script src="{{ asset('assets/js/magnific-popup.js') }}"></script>
     <script src="{{ asset('assets/js/waypoints.min.js') }}"></script>
     <script src="{{ asset('assets/js/finalcountdown.min.js') }}"></script>
-    <script src="{{ asset('assets/js/nicesellect.js') }}"></script>
+    {{-- <script src="{{ asset('assets/js/nicesellect.js') }}"></script> --}}
     <script src="{{ asset('assets/js/flex-slider.js') }}"></script>
     <script src="{{ asset('assets/js/scrollup.js') }}"></script>
     <script src="{{ asset('assets/js/onepage-nav.min.js') }}"></script>

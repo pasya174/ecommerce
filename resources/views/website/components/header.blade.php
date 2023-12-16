@@ -22,7 +22,7 @@
                             <li><i class="ti-power-off"></i> <a href="#">
                                     <div class="sinlge-bar shopping">
                                         <a href="#" class="single-icon"> <span
-                                                class="total-count">{{ !empty(auth()->user()) ? 'Hallo, ' . auth()->user()->name : 'Login' }}</span></a>
+                                                class="total-count">{{ !empty(auth()->user()) ? 'Hallo, ' . auth()->user()->username : 'Login' }}</span></a>
                                         @if (empty(auth()->user()))
                                             <div class="shopping-item">
                                                 <form action="{{ route('post-login.user') }}" method="post">
@@ -38,6 +38,10 @@
                                                             class="form-control">
                                                     </div>
                                                     <button type="submit" class="btn btn-primary">Login</button>
+                                                    <button type="button" class="btn btn-primary"
+                                                        data-bs-toggle="modal" data-bs-target="#modalRegister">
+                                                        Register
+                                                    </button>
                                                 </form>
                                             </div>
                                         @else
@@ -106,14 +110,16 @@
                                             @endphp
                                         @endforeach
                                     </ul>
-                                    <div class="bottom">
-                                        <div class="total">
-                                            <span>Total</span>
-                                            <span
-                                                class="total-amount">{{ format_rupiah(array_sum($array_total)) }}</span>
+                                    @if (!empty($cart[0]))
+                                        <div class="bottom">
+                                            <div class="total">
+                                                <span>Total</span>
+                                                <span
+                                                    class="total-amount">{{ format_rupiah(array_sum($array_total)) }}</span>
+                                            </div>
+                                            <a href="{{ route('checkout') }}" class="btn animate">Checkout</a>
                                         </div>
-                                        <a href="checkout.html" class="btn animate">Checkout</a>
-                                    </div>
+                                    @endif
                                 </div>
                                 <!--/ End Shopping Item -->
                             </div>
@@ -135,19 +141,22 @@
                                 <div class="navbar-collapse">
                                     <div class="nav-inner">
                                         <ul class="nav main-menu menu navbar-nav">
-                                            <li class="active"><a href="{{ route('home') }}">Home</a></li>
-                                            <li><a href="{{ route('catalogue') }}">Product</a></li>
-                                            <li><a href="{{ route('cart') }}">Cart</a></li>
+                                            <li class="{{ $active == 'home' ? 'active' : '' }}"><a
+                                                    href="{{ route('home') }}">Home</a></li>
+                                            <li class="{{ $active == 'product' ? 'active' : '' }}"><a
+                                                    href="{{ route('catalogue') }}">Product</a></li>
+                                            <li class="{{ $active == 'cart' ? 'active' : '' }}"><a
+                                                    href="{{ route('cart') }}">Cart</a></li>
+                                            <li class="{{ $active == 'leaderboard' ? 'active' : '' }}"><a
+                                                    href="{{ route('leaderboard.index') }}">Leaderboard</a></li>
                                         </ul>
                                     </div>
                                 </div>
                             </nav>
-                            <!--/ End Main Menu -->
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <!--/ End Header Inner -->
 </header>
