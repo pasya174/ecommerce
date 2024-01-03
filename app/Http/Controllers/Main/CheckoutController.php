@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use RealRashid\SweetAlert\Facades\Alert;
 
@@ -45,6 +46,13 @@ class CheckoutController extends Controller
         $total_amount = array_sum($array_transaction_detail);
 
         return view('website.pages.checkout', compact('active', 'cart', 'province', 'data', 'total_amount'));
+    }
+
+    public function province()
+    {
+        $URL = 'https://www.emsifa.com/api-wilayah-indonesia/api/provinces.json';
+        $data = collect(Http::get($URL)->json());
+        return response()->json($data);
     }
 
     public function city($id)
@@ -82,6 +90,7 @@ class CheckoutController extends Controller
             'kelurahan' => 'required',
             'address' => 'required',
             'postal_code' => 'required',
+            'image' => 'required|image|mimes:jpeg,png,jpg',
         ]);
 
         if ($validator->fails()) {
@@ -90,8 +99,14 @@ class CheckoutController extends Controller
         }
 
         unset($request['_token']);
+
+        $image = $request->file('image');
+        $image_name = bin2hex(time() . '-checkout-' . $image->getClientOriginalName()) . '.' . $image->getClientOriginalExtension();
+        Storage::putFileAs('public/uploads/images/checkout/', $image, $image_name);
         $data = Transactions::findOrFail($request->id);
         $data->fill($request->all());
+        $data->proof_of_payment = $image_name;
+        // dd($data);
         if ($data->temp_points_used == 20) {
             $data->points_used = 500;
         }
@@ -103,7 +118,7 @@ class CheckoutController extends Controller
         if ($data->temp_points_used == 50) {
             $data->points_used = 5000;
         }
-        // $data->status = 1;
+        $data->status = 1;
         $data->save();
 
         $user = User::where('email', $data->email)->first();

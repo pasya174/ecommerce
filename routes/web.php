@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\Admin\Auth\LoginController;
 use App\Http\Controllers\Admin\ProductsController;
+use App\Http\Controllers\Admin\TransactionController as AdminTransactionController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoriesController;
 use App\Http\Controllers\HeaderController;
@@ -9,6 +11,7 @@ use App\Http\Controllers\Main\CataloguesController;
 use App\Http\Controllers\Main\CheckoutController;
 use App\Http\Controllers\Main\HomeController;
 use App\Http\Controllers\Main\LeaderboardController;
+use App\Http\Controllers\Main\OrderController;
 use App\Http\Controllers\TransactionController;
 use Illuminate\Support\Facades\Route;
 
@@ -36,7 +39,16 @@ Route::get('delete-detail/{id}', [HomeController::class, 'delete_detail_transact
 Route::get('leaderboard', [LeaderboardController::class, 'index'])->name('leaderboard.index');
 
 Route::group([
-    'prefix' => 'checkout'
+    'prefix' => 'auth'
+], function () {
+    Route::get('login', [LoginController::class, 'index'])->name('auth.login.index');
+    Route::post('post-login', [LoginController::class, 'post_login'])->name('auth.login.post-login');
+    Route::get('logout', [LoginController::class, 'logout'])->name('auth.login.logout');
+});
+
+Route::group([
+    'prefix' => 'checkout',
+    'middleware' => ['auth'],
 ], function () {
     Route::get('', [CheckoutController::class, 'index'])->name('checkout');
     Route::post('', [CheckoutController::class, 'store'])->name('checkout.store');
@@ -51,7 +63,15 @@ Route::group([
 });
 
 Route::group([
-    'prefix' => 'admin'
+    'prefix' => 'orders'
+], function () {
+    Route::get('', [OrderController::class, 'index'])->name('order.index');
+    Route::post('give-review', [OrderController::class, 'give_review'])->name('order.review');
+});
+
+Route::group([
+    'prefix' => 'admin',
+    'middleware' => ['auth', 'role:admin'],
 ], function () {
     Route::group([
         'prefix' => 'product',
@@ -74,6 +94,13 @@ Route::group([
     });
 
     Route::group([
+        'prefix' => 'transaction',
+    ], function () {
+        Route::get('', [AdminTransactionController::class, 'index'])->name('transaction.index');
+        Route::post('is-accept', [AdminTransactionController::class, 'isAccept'])->name('transaction.is-accept');
+    });
+
+    Route::group([
         'prefix' => 'header'
     ], function () {
         Route::get('', [HeaderController::class, 'index'])->name('header.index');
@@ -87,7 +114,8 @@ Route::group([
 Route::group([
     'prefix' => 'data'
 ], function () {
-    Route::get('city/{id}', [CheckoutController::class, 'city']);
-    Route::get('district/{id}', [CheckoutController::class, 'district']);
-    Route::get('village/{id}', [CheckoutController::class, 'village']);
+    Route::get('province', [CheckoutController::class, 'province'])->name('province');
+    Route::get('city/{id}', [CheckoutController::class, 'city'])->name('city');
+    Route::get('district/{id}', [CheckoutController::class, 'district'])->name('district');
+    Route::get('village/{id}', [CheckoutController::class, 'village'])->name('village');
 });

@@ -32,6 +32,7 @@ class Transactions extends Model
         'temp_points_used',
         'status',
         'payment_status',
+        'proof_of_payment',
         'created_at',
         'updated_at',
     ];

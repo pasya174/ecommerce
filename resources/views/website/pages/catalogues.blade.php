@@ -40,7 +40,7 @@
                     </div>
                 </div>
                 <div class="col-lg-9 col-md-8 col-12">
-                    <div class="row">
+                    {{-- <div class="row">
                         <div class="col-12">
                             <!-- Shop Top -->
                             <div class="shop-top">
@@ -66,13 +66,13 @@
                             </div>
                             <!--/ End Shop Top -->
                         </div>
-                    </div>
+                    </div> --}}
                     <div class="row">
                         @foreach ($products_all as $row)
                             <div class="col-lg-4 col-md-6 col-12">
                                 <div class="single-product">
                                     <div class="product-img">
-                                        <a href="product-details.html">
+                                        <a href="javascript:void">
                                             <img class="default-img"
                                                 src="{{ asset('storage/uploads/images/products/') . '/' . $row->image }}"
                                                 alt="#" style="width: 230px; height: 250px;">
@@ -213,3 +213,11 @@
     </div>
     @include('website.components.modal-footer')
 @endsection
+
+@push('head')
+    <style>
+        .single-product {
+            margin-top: 0px;
+        }
+    </style>
+@endpush

@@ -20,6 +20,7 @@ class ProductDetailsSeeder extends Seeder
                 'size' => 'xl',
                 'color' => 'grey',
                 'stock' => 100,
+                'image' => '313730333433323133302d61646d696e2d42616775732042616e676574.jpeg',
             ],
             [
                 'product_id' => 2,
@@ -27,6 +28,7 @@ class ProductDetailsSeeder extends Seeder
                 'size' => 'l',
                 'color' => 'grey',
                 'stock' => 200,
+                'image' => '313730333433323031342d61646d696e2d42616775732042616e6765742053656b616c69.jpeg',
             ],
             [
                 'product_id' => 3,
@@ -34,6 +36,7 @@ class ProductDetailsSeeder extends Seeder
                 'size' => 'm',
                 'color' => 'black',
                 'stock' => 50,
+                'image' => '313730333433323130312d61646d696e2d4261677573.jpg',
             ],
         ]);
     }

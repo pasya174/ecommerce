@@ -22,7 +22,7 @@
     <!-- Start Checkout -->
     <section class="shop checkout section">
         <div class="container">
-            <form class="form" method="post" action="{{ route('checkout.store') }}">
+            <form class="form" method="post" action="{{ route('checkout.store') }}" enctype="multipart/form-data">
                 <div class="row">
                     @csrf
                     <div class="col-lg-8 col-12">
@@ -139,7 +139,7 @@
                             <!--/ End Order Widget -->
                             <!-- Order Widget -->
                             <div class="single-widget">
-                                <h2>Payments</h2>
+                                {{-- <h2>Payments</h2>
                                 <div class="content">
                                     <div class="checkbox">
                                         <label class="checkbox-inline" for="1"><input name="updates" id="1"
@@ -150,14 +150,47 @@
                                                 type="checkbox"> PayPal</label>
                                     </div>
                                 </div>
+                            </div> --}}
+                                <div class="single-widget get-button">
+                                    <div class="content">
+                                        <div class="button">
+                                            <input type="number"
+                                                value="{{ $total_amount - ($total_amount * $data->temp_points_used) / 100 }}"
+                                                name="total_amount" hidden>
+                                            {{-- <button type="submit" class="btn">proceed to checkout</button> --}}
+                                            <button type="button" class="btn btn-primary" data-toggle="modal"
+                                                data-target="#modalPayment">
+                                                Pay
+                                            </button>
+
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="single-widget get-button">
-                                <div class="content">
-                                    <div class="button">
-                                        <input type="number"
-                                            value="{{ $total_amount - ($total_amount * $data->temp_points_used) / 100 }}"
-                                            name="total_amount" hidden>
-                                        <button type="submit" class="btn">proceed to checkout</button>
+                        </div>
+                    </div>
+                    <div class="modal fade" id="modalPayment" tabindex="-1" role="dialog">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                            class="ti-close" aria-hidden="true"></span></button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="row no-gutters">
+                                        <div class="col-12">
+                                            <div class="quickview-content">
+                                                <p>Untuk melakukan pembayaran dapat transfer rekening dibawah
+                                                    028884899390003</p>
+                                                <div class="form-group mt-5">
+                                                    <label for="">Proof of Payment</label>
+                                                    <input type="file" name="image" class="form-control" required>
+                                                </div>
+                                                <div class="add-to-cart">
+                                                    <button type="submit" class="btn">Checkout</button>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -167,7 +200,37 @@
             </form>
         </div>
     </section>
+
     <!--/ End Checkout -->
+
+    @push('head')
+        <style>
+            .modal-dialog .modal-content {
+                margin: 50px 290px;
+            }
+
+            @media only screen and (max-width: 991px) {
+                .modal-dialog .modal-content {
+                    margin: 50px 100px;
+                }
+            }
+
+            @media only screen and (max-width: 768px) {
+                .modal-dialog .modal-content {
+                    margin: 50px 25px;
+                }
+            }
+
+            .shop.checkout .form .form-group input {
+                line-height: 25px !important;
+                padding: 7px 20px !important;
+            }
+
+            .modal-dialog .modal-content .modal-body {
+                max-height: 310px;
+            }
+        </style>
+    @endpush
 
     @push('script')
         <script>

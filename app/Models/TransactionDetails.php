@@ -18,6 +18,7 @@ class TransactionDetails extends Model
         'transaction_id',
         'product_details_id',
         'quantity',
+        'review',
         'created_at',
         'updated_at',
     ];

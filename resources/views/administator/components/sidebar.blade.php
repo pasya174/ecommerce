@@ -8,12 +8,12 @@
 
         <!-- menu profile quick info -->
         <div class="profile clearfix">
-            <div class="profile_pic">
+            {{-- <div class="profile_pic">
                 <img src="images/img.jpg" alt="..." class="img-circle profile_img">
-            </div>
-            <div class="profile_info">
+            </div> --}}
+            <div class="profile_info d-flex align-items-center">
                 <span>Welcome,</span>
-                <h2>Admin</h2>
+                <h2 class="ml-2">{{ auth()->user()->username }}</h2>
             </div>
         </div>
 
@@ -25,6 +25,7 @@
                 <ul class="nav side-menu">
                     <li><a href="{{ route('product.index') }}">Products</a></li>
                     <li><a href="{{ route('category.index') }}">Categories</a></li>
+                    <li><a href="{{ route('transaction.index') }}">Transaction</a></li>
                 </ul>
             </div>
             <div class="menu_section">

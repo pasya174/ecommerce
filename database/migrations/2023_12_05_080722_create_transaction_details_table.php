@@ -18,6 +18,7 @@ return new class extends Migration
             $table->unsignedBigInteger('product_details_id');
             $table->foreign('product_details_id')->references('id')->on('product_details');
             $table->integer('quantity');
+            $table->longText('review')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

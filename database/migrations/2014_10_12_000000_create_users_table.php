@@ -21,6 +21,7 @@ return new class extends Migration
             $table->integer('total_points')->default(0);
             $table->string('password');
             $table->date('last_point_date')->nullable();
+            $table->string('role')->nullable();
             $table->rememberToken();
             $table->softDeletes();
             $table->timestamps();

@@ -40,10 +40,16 @@ class TransactionController extends Controller
             }
 
             $data->save();
-            $data_detail = TransactionDetails::where('product_details_id', $request->product_details_id)->first();
-            if (!empty($data_detail)) {
-                $data_detail->quantity += $request->quantity;
-                $data_detail->save();
+
+
+            if (TransactionDetails::where('transaction_id', $data->id)->first()) {
+                $data_detail = TransactionDetails::where('product_details_id', $request->product_details_id)
+                    ->where('transaction_id', $data->id)
+                    ->first();
+                if (!empty($data_detail)) {
+                    $data_detail->quantity += $request->quantity;
+                    $data_detail->save();
+                }
             } else {
                 $data_detail = new TransactionDetails();
                 $data_detail->fill($request->all());
@@ -76,7 +82,6 @@ class TransactionController extends Controller
         // dd($request->all());
         $data = Transactions::where('user_id', Auth::user()->id)->where('status', 0)->first();
         if ($request->has('point_use_checkout')) {
-
             $data->temp_points_used = $request->point_use_checkout;
         }
         $data->save();

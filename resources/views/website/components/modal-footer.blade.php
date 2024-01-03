@@ -15,7 +15,7 @@
                                     @foreach ($products_modal->where('product_id', $item->product[0]->id) as $row)
                                         <div class="single-slider">
                                             <img src="{{ asset('storage/uploads/images/products/') . '/' . $row->image }}"
-                                                alt="#">
+                                                style="width: 450px; height: 510px;" alt="#">
                                         </div>
                                     @endforeach
                                     <div class="single-slider">
@@ -24,7 +24,6 @@
                                     </div>
                                 </div>
                             </div>
-                            <!-- End Product slider -->
                         </div>
                         <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
                             <form action="{{ route('add-cart') }}" method="post">
@@ -82,12 +81,27 @@
                                     </div>
                                 </div>
                             </form>
+                            @foreach ($product_review->where('product_id', $item->product[0]->id) as $row)
+                                <div class="reviews-members pt-4 pb-4">
+                                    <div class="media">
+                                        <div class="media-body">
+                                            <div class="reviews-members-header">
+                                                <h6 class="mb-1"><a class="text-black"
+                                                        href="#">{{ $row->username }}</a>
+                                                </h6>
+                                            </div>
+                                            <div class="reviews-members-body">
+                                                <p>{{ $row->review }}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
     </div>
 @endforeach
 
@@ -133,3 +147,96 @@
         </div>
     </div>
 </div>
+
+@push('head')
+    <style>
+        .reviews-members .media .mr-3 {
+            width: 56px;
+            height: 56px;
+            object-fit: cover;
+        }
+
+        .rounded-pill {
+            border-radius: 50rem !important;
+        }
+
+        .total-like-user {
+            border: 2px solid #fff;
+            height: 34px;
+            box-shadow: 0 .125rem .25rem rgba(0, 0, 0, .075) !important;
+            width: 34px;
+        }
+
+        .total-like-user-main a {
+            display: inline-block;
+            margin: 0 -17px 0 0;
+        }
+
+        .total-like {
+            border: 1px solid;
+            border-radius: 50px;
+            display: inline-block;
+            font-weight: 500;
+            height: 34px;
+            line-height: 33px;
+            padding: 0 13px;
+            vertical-align: top;
+        }
+
+        .restaurant-detailed-ratings-and-reviews hr {
+            margin: 0 -24px;
+        }
+
+        .graph-star-rating-header .star-rating {
+            font-size: 17px;
+        }
+
+        .progress {
+            background: #f2f4f8 none repeat scroll 0 0;
+            border-radius: 0;
+            height: 30px;
+        }
+
+        .rating-list {
+            display: inline-flex;
+            margin-bottom: 15px;
+            width: 100%;
+        }
+
+        .rating-list-left {
+            height: 16px;
+            line-height: 29px;
+            width: 10%;
+        }
+
+        .rating-list-center {
+            width: 80%;
+        }
+
+        .rating-list-right {
+            line-height: 29px;
+            text-align: right;
+            width: 10%;
+        }
+
+        .restaurant-slider-pics {
+            bottom: 0;
+            font-size: 12px;
+            left: 0;
+            z-index: 999;
+            padding: 0 10px;
+        }
+
+        .restaurant-slider-view-all {
+            bottom: 15px;
+            right: 15px;
+            z-index: 999;
+        }
+
+        .progress {
+            background: #f2f4f8 none repeat scroll 0 0;
+            border-radius: 0;
+            height: 30px;
+        }
+    </style>
+@endpush

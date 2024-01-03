@@ -26,6 +26,7 @@ class User extends Authenticatable
         'points',
         'total_points',
         'last_point_date',
+        'role',
     ];
 
     /**

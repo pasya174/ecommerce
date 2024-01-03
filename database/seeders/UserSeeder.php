@@ -22,7 +22,8 @@ class UserSeeder extends Seeder
                 'email' => 'anggi@gmail.com',
                 'password' => Hash::make('anggi123'),
                 'points' => 2000,
-                'total_points' => 2000
+                'total_points' => 2000,
+                'role' => '',
             ],
             [
                 'username' => 'Agus',
@@ -31,15 +32,28 @@ class UserSeeder extends Seeder
                 'email' => 'agus@gmail.com',
                 'password' => Hash::make('agus123'),
                 'points' => 900,
-                'total_points' => 900
-            ], [
+                'total_points' => 900,
+                'role' => '',
+            ],
+            [
                 'username' => 'Angga',
                 'first_name' => 'Angga',
                 'last_name' => 'Wijaya',
                 'email' => 'Angga@gmail.com',
                 'password' => Hash::make('angga123'),
                 'points' => 5000,
-                'total_points' => 5000
+                'total_points' => 5000,
+                'role' => '',
+            ],
+            [
+                'username' => 'Admin',
+                'first_name' => 'Admin',
+                'last_name' => 'Admin',
+                'email' => 'admin@admin.com',
+                'password' => Hash::make('admin'),
+                'points' => 5000,
+                'total_points' => 5000,
+                'role' => 'admin',
             ],
         ]);
     }

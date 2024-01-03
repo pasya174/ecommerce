@@ -30,7 +30,8 @@ return new class extends Migration
             $table->integer('points_used')->default(0)->nullable();
             $table->integer('temp_points_used')->default(0)->nullable();
             $table->string('status')->default(0);
-            $table->string('payment_status')->nullable();
+            $table->string('proof_of_payment')->nullable();
+            $table->boolean('payment_status')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

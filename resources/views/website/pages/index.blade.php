@@ -87,7 +87,7 @@
                                             <div class="col-xl-3 col-lg-4 col-md-4 col-12">
                                                 <div class="single-product">
                                                     <div class="product-img">
-                                                        <a href="product-details.html">
+                                                        <a href="javascript:void">
                                                             <img class="default-img"
                                                                 src="{{ asset('storage/uploads/images/products/') . '/' . $row->image }}"
                                                                 alt="#" style="width: 230px; height: 250px;">
@@ -110,7 +110,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="product-content">
-                                                        <h3><a href="product-details.html">{{ $row->product[0]->name }}</a>
+                                                        <h3><a href="javascript:void">{{ $row->product[0]->name }}</a>
                                                         </h3>
                                                         <div class="product-price">
                                                             <span>{{ format_rupiah($row->product[0]->price) }}</span>
@@ -130,7 +130,7 @@
                                                 <div class="col-xl-3 col-lg-4 col-md-4 col-12">
                                                     <div class="single-product">
                                                         <div class="product-img">
-                                                            <a href="product-details.html">
+                                                            <a href="javascript:void">
                                                                 <img class="default-img"
                                                                     src="{{ asset('storage/uploads/images/products/') . '/' . $row->image }}"
                                                                     alt="#" style="width: 230px; height: 250px;">
@@ -153,8 +153,7 @@
                                                             </div>
                                                         </div>
                                                         <div class="product-content">
-                                                            <h3><a
-                                                                    href="product-details.html">{{ $row->product[0]->name }}</a>
+                                                            <h3><a href="javascript:void">{{ $row->product[0]->name }}</a>
                                                             </h3>
                                                             <div class="product-price">
                                                                 <span>{{ format_rupiah($row->product[0]->price) }}</span>
