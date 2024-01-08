@@ -34,9 +34,12 @@ class CheckoutController extends Controller
         $array_transaction_detail = array();
 
         $total_amount = DB::table('transaction_details as td')
+            ->join('transactions as t', 't.id', '=', 'td.transaction_id')
             ->join('product_details as pd', 'pd.id', '=', 'td.product_details_id')
             ->join('products as p', 'p.id', '=', 'pd.product_id')
             ->select('td.quantity', 'p.price')
+            ->where('t.status', 0)
+            ->where('t.user_id', Auth::user()->id)
             ->get();
 
         foreach ($total_amount as $item) {
