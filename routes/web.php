@@ -27,7 +27,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::redirect('/iki', 'admin/product');
-// op
+Route::redirect('login', 'auth/login');
 
 Route::get('', [HomeController::class, 'index'])->name('home');
 Route::get('catalogue', [CataloguesController::class, 'index'])->name('catalogue');

@@ -7,6 +7,7 @@ use App\Models\ProductDetails;
 use App\Models\User;
 use App\Traits\MyTrait;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class LeaderboardController extends Controller
 {

@@ -15,10 +15,7 @@ class CategoriesSeeder extends Seeder
     {
         DB::table('categories')->insert([
             [
-                'name' => 'Baju',
-            ],
-            [
-                'name' => 'Celana',
+                'name' => 'Pakaian',
             ],
             [
                 'name' => 'Hijab'

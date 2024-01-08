@@ -36,7 +36,7 @@ class ProductsController extends Controller
             'category_id' => 'required|exists:categories,id',
             'size' => 'required',
             'stock' => 'required',
-            'image' => 'required|image|mimes:jpeg,png,jpg',
+            'image' => 'required|image|mimes:jpeg,png,jpg,webp',
         ]);
 
         if ($validator->fails()) {
@@ -121,7 +121,7 @@ class ProductsController extends Controller
             'category_id' => 'required|exists:categories,id',
             'size' => 'required',
             'stock' => 'required',
-            'image' => 'required|image|mimes:jpeg,png,jpg',
+            'image' => 'required|image|mimes:jpeg,png,jpg,webp',
         ]);
 
         if ($validator->fails()) {

@@ -15,18 +15,34 @@ class ProductsSeeder extends Seeder
     {
         DB::table('products')->insert([
             [
-                'name' => 'Pashmina',
+                'name' => 'Abaya',
                 'description' => 'Bagus Banget',
                 'price' => 10000,
             ],
             [
-                'name' => 'Baju KOKO',
+                'name' => 'Gamis',
                 'description' => 'Bagus Banget Sekali',
-                'price' => 5000,
-            ], [
-                'name' => 'Celana Kulot',
+                'price' => 10000,
+            ],
+            [
+                'name' => 'Hanbok',
                 'description' => 'Bagus',
-                'price' => 20000,
+                'price' => 10000,
+            ],
+            [
+                'name' => 'Kaftan',
+                'description' => 'Bagus',
+                'price' => 10000,
+            ],
+            [
+                'name' => 'Pasmina',
+                'description' => 'Bagus',
+                'price' => 10000,
+            ],
+            [
+                'name' => 'Tunik',
+                'description' => 'Bagus',
+                'price' => 10000,
             ],
         ]);
     }

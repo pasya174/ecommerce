@@ -25,7 +25,7 @@ trait MyTrait
                 ->join('product_details as pd', 'td.product_details_id', '=', 'pd.id')
                 ->join('products as p', 'p.id', '=', 'pd.product_id')
                 ->join('transactions as t', 'td.transaction_id', 't.id')
-                ->where('user_id', Auth::user()->id)
+                ->where('t.user_id', Auth::user()->id)
                 ->where('t.status', 0)
                 ->whereNull('td.deleted_at')
                 ->whereNull('pd.deleted_at')
@@ -47,6 +47,7 @@ trait MyTrait
             ->join('product_details as pd', 'pd.id', '=', 'td.product_details_id')
             ->join('products as p', 'p.id', '=', 'pd.product_id')
             ->where('t.id', $id)
+            ->where('t.user_id', Auth::user()->id)
             ->groupBy('td.id')
             ->get();
         foreach ($data as $item) {
