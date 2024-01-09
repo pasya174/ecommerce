@@ -34,22 +34,16 @@ class TransactionController extends Controller
             if (!$data) {
                 $data = new Transactions();
                 $data->user_id = Auth::user()->id;
-                // $data->total_amount = Products::where('id', ProductDetails::where('id', $request->product_details_id)->pluck('product_id')[0])->pluck('price')[0] * $request->quantity;
-            } else {
-                // $data->total_amount = $this->total_amount($data->id);
             }
 
             $data->save();
 
-
-            if (TransactionDetails::where('transaction_id', $data->id)->first()) {
-                $data_detail = TransactionDetails::where('product_details_id', $request->product_details_id)
-                    ->where('transaction_id', $data->id)
-                    ->first();
-                if (!empty($data_detail)) {
-                    $data_detail->quantity += $request->quantity;
-                    $data_detail->save();
-                }
+            $data_detail = TransactionDetails::where('product_details_id', $request->product_details_id)
+                ->where('transaction_id', $data->id)
+                ->first();
+            if ($data_detail) {
+                $data_detail->quantity += (int) $request->quantity;
+                $data_detail->save();
             } else {
                 $data_detail = new TransactionDetails();
                 $data_detail->fill($request->all());
