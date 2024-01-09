@@ -27,6 +27,7 @@
                             <th scope="col">Date</th>
                             <th scope="col">Name</th>
                             <th scope="col">Total Prices</th>
+                            <th scope="col">Status</th>
                             <th scope="col">Details</th>
                         </tr>
                     </thead>
@@ -37,10 +38,11 @@
                                 <th>{{ $item->updated_at }}</th>
                                 <td>{{ $item->first_name . ' ' . $item->last_name }}</td>
                                 <td>{{ format_rupiah($item->total_amount) }}</td>
+                                <td>{{ $item->payment_status == true ? 'Accepted' : 'Rejected' }}</td>
                                 <td>
                                     <button type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal"
-                                        data-target="#modalDetail{{ $item->id }}">
-                                        Launch demo modal
+                                        data-target="#{{ $item->payment_status == true ? 'modalDetail' : 'modalPayment' }}{{ $item->id }}">
+                                        {{ $item->payment_status == true ? 'Review' : 'Payment' }}
                                     </button>
                                 </td>
                             </tr>
@@ -106,12 +108,48 @@
     @endforeach
 
     @foreach ($data_detail as $item)
-        <div class="modal fade" id="modalReview{{ $item->id }}" tabindex="-1" role="dialog">
+        <div class="modal fade" id="modalPayment{{ $item->id }}" tabindex="-1" role="dialog">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span class="ti-close"
                                 aria-hidden="true"></span></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row no-gutters">
+                            <div class="col-12">
+                                <div class="quickview-content">
+                                    <p>Untuk melakukan pembayaran dapat transfer rekening dibawah
+                                        028884899390003</p>
+                                    <form action="{{ route('order.reorder') }}" method="post"
+                                        enctype="multipart/form-data">
+                                        @csrf
+                                        <div class="form-group mt-5">
+                                            <label for="">Proof of Payment</label>
+                                            <input type="number" name="id" value="{{ $item->transaction_id }}"
+                                                hidden>
+                                            <input type="file" name="image" class="form-control" required>
+                                        </div>
+                                        <div class="add-to-cart">
+                                            <button type="submit" class="btn">Checkout</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endforeach
+
+    @foreach ($data_detail as $item)
+        <div class="modal fade" id="modalReview{{ $item->id }}" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                class="ti-close" aria-hidden="true"></span></button>
                     </div>
                     <div class="modal-body">
                         <div class="row no-gutters">

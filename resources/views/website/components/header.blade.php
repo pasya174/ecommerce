@@ -149,8 +149,10 @@
                                                     href="{{ route('cart') }}">Cart</a></li>
                                             <li class="{{ $active == 'leaderboard' ? 'active' : '' }}"><a
                                                     href="{{ route('leaderboard.index') }}">Leaderboard</a></li>
-                                            <li class="{{ $active == 'order' ? 'active' : '' }}"><a
-                                                    href="{{ route('order.index') }}">Order</a></li>
+                                            @if (!empty(auth()->user()))
+                                                <li class="{{ $active == 'order' ? 'active' : '' }}"><a
+                                                        href="{{ route('order.index') }}">Order</a></li>
+                                            @endif
                                         </ul>
                                     </div>
                                 </div>

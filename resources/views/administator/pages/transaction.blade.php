@@ -39,10 +39,7 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach ($data as $item)
-                                                @php
-                                                    // dd($item->proof_of_payment);
-                                                @endphp
+                                            @foreach ($data->where('payment_status', false) as $item)
                                                 <tr>
                                                     <td>{{ $loop->iteration }}</td>
                                                     <td>{{ $item->user[0]->username }}</td>
@@ -63,6 +60,8 @@
                                                                 class="fa fa-info"></i></button>
                                                         <button class="btn btn-outline-success btn-sm" data-toggle="modal"
                                                             data-target="#modalAccept{{ $item->id }}">Accept</button>
+                                                        <button class="btn btn-outline-danger btn-sm" data-toggle="modal"
+                                                            data-target="#modalReject{{ $item->id }}">Reject</button>
                                                 </tr>
                                             @endforeach
                                         </tbody>
@@ -249,6 +248,38 @@
                                 <input type="number" value="{{ $item->id }}" name="id" hidden>
                                 <button type="button" class="btn btn-outline-secondary">Cancel</button>
                                 <button type="submit" class="btn btn-outline-success">Accept</button>
+                            </form>
+                        </div>
+                    </div>
+                    {{-- <div class="modal-footer">
+                    </div> --}}
+                </div>
+            </div>
+        </div>
+    @endforeach
+
+    @foreach ($data as $item)
+        <div class="modal fade" id="modalReject{{ $item->id }}" tabindex="-1" role="dialog"
+            aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+                <div class="modal-content">
+                    <div class="modal-header d-flex justify-content-between align-items-center">
+                        <div class="flex-start">
+                            <p>Reject Order{{ $item->user[0]->username }}?</p>
+                        </div>
+                        <div class="flex-end">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="modal-body">
+                        <div class="card-box d-flex justify-content-center align-items-center">
+                            <form action="{{ route('transaction.is-reject') }}" method="post">
+                                @csrf
+                                <input type="number" value="{{ $item->id }}" name="id" hidden>
+                                <button type="button" class="btn btn-outline-secondary">Cancel</button>
+                                <button type="submit" class="btn btn-outline-danger">Reject</button>
                             </form>
                         </div>
                     </div>

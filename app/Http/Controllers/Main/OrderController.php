@@ -10,6 +10,7 @@ use App\Traits\MyTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use RealRashid\SweetAlert\Facades\Alert;
 
@@ -19,12 +20,12 @@ class OrderController extends Controller
     public function index()
     {
         $active = 'order';
-        $data = Transactions::where('payment_status', true)
+        $data = Transactions::where('payment_status', '!=', null)
             ->where('user_id', Auth::user()->id)
             ->get();
 
         $data_detail = TransactionDetails::whereHas('transaction', function ($query) {
-            $query->where('payment_status', true)
+            $query->where('payment_status', '!=', null)
                 ->where('user_id', Auth::user()->id);
         })->get();
 
@@ -42,10 +43,12 @@ class OrderController extends Controller
             ->join('transactions as t', 't.id', '=', 'td.transaction_id')
             ->where('t.status', 1)
             ->where('t.user_id', Auth::user()->id)
+            ->where('t.payment_status', '!=', null)
             ->whereNull('td.deleted_at')
             ->whereNull('pd.deleted_at')
             ->whereNull('p.deleted_at')
             ->get();
+        // dd($data_detail);
 
         $product_review = DB::table('transaction_details as td')
             ->select(
@@ -90,6 +93,33 @@ class OrderController extends Controller
         $data->save();
 
         Alert::toast('Thanks for Review', 'success');
+        return back();
+    }
+
+    public function re_order(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'id' => 'required|exists:transactions,id',
+            'image' => 'required|image|mimes:jpeg,png,jpg',
+        ]);
+
+        if ($validator->fails()) {
+            Alert::toast($validator->messages()->all(), 'error');
+            return back();
+        }
+
+        $image = $request->file('image');
+        $image_name = bin2hex(time() . '-checkout-' . $image->getClientOriginalName()) . '.' . $image->getClientOriginalExtension();
+
+        $data = Transactions::findOrFail($request->id);
+        Storage::delete('public/uploads/images/checkout/', $data->proof_of_payment);
+        Storage::putFileAs('public/uploads/images/checkout/', $image, $image_name);
+        $data->payment_status = null;
+        $data->proof_of_payment = $image_name;
+        $data->save();
+
+
+        Alert::toast('Success for sent proof of payment', 'success');
         return back();
     }
 }

@@ -17,6 +17,7 @@ class TransactionController extends Controller
     {
         $data = Transactions::with('user')
             ->where('status', 1)
+            ->whereNull('payment_status')
             ->get();
         foreach ($data as $item) {
             if (!$item->kelurahan == 0) {
@@ -70,11 +71,32 @@ class TransactionController extends Controller
         }
 
         $data = Transactions::findOrFail($request->id);
-        if ($data->payment_status == true) {
-            $data->payment_status = false;
-        } else {
-            $data->payment_status = true;
+        // if ($data->payment_status == true) {
+        //     $data->payment_status = false;
+        // } else {
+        //     $data->payment_status = true;
+        // }
+        $data->payment_status = true;
+
+        $data->save();
+
+        Alert::toast('Change Accept Successfully', 'success');
+        return back();
+    }
+
+    public function isReject(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'id' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            Alert::toast($validator->messages()->all(), 'error');
+            return back();
         }
+
+        $data = Transactions::findOrFail($request->id);
+        $data->payment_status = false;
 
         $data->save();
 

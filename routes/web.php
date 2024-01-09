@@ -67,6 +67,7 @@ Route::group([
 ], function () {
     Route::get('', [OrderController::class, 'index'])->name('order.index');
     Route::post('give-review', [OrderController::class, 'give_review'])->name('order.review');
+    Route::post('re-order', [OrderController::class, 're_order'])->name('order.reorder');
 });
 
 Route::group([
@@ -98,6 +99,7 @@ Route::group([
     ], function () {
         Route::get('', [AdminTransactionController::class, 'index'])->name('transaction.index');
         Route::post('is-accept', [AdminTransactionController::class, 'isAccept'])->name('transaction.is-accept');
+        Route::post('is-reject', [AdminTransactionController::class, 'isReject'])->name('transaction.is-reject');
     });
 
     Route::group([
