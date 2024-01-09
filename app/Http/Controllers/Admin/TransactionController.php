@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\ProductDetails;
 use App\Models\TransactionDetails;
 use App\Models\Transactions;
 use Illuminate\Http\Request;
@@ -79,6 +80,14 @@ class TransactionController extends Controller
         $data->payment_status = true;
 
         $data->save();
+
+        $data_detail = TransactionDetails::where('transaction_id', $data->id)->get();
+
+        foreach ($data_detail as $item) {
+            $product_detail = ProductDetails::where('id', $item->product_details_id)->first();
+            $product_detail->stock -= $item->quantity;
+            $product_detail->save();
+        }
 
         Alert::toast('Change Accept Successfully', 'success');
         return back();
