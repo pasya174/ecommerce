@@ -53,7 +53,7 @@
                                         <label>Email Address<span>*</span></label>
                                         <input type="email" name="email"
                                             value="{{ empty(old('email')) ? auth()->user()->email : old('email') }}"
-                                            required>
+                                            required readonly>
                                     </div>
                                 </div>
                                 <div class="col-lg-6 col-md-6 col-12">
