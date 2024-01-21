@@ -25,6 +25,7 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+// cek
 
 Route::redirect('/iki', 'admin/product');
 Route::redirect('login', 'auth/login');

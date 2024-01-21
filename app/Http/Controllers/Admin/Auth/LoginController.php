@@ -29,7 +29,6 @@ class LoginController extends Controller
 
         if ($validator->fails()) {
             Alert::error($validator->messages()->all());
-            dd($validator->messages()->all());
             return redirect()->route('auth.login.index');
         }
 
