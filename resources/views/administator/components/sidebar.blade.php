@@ -29,6 +29,18 @@
                 </ul>
             </div>
             <div class="menu_section">
+                <h3>Laporan</h3>
+                <ul class="nav side-menu">
+                    <li><a href="{{ route('laporan.index') }}">Laporan</a></li>
+                </ul>
+            </div>
+            <div class="menu_section">
+                <h3>History</h3>
+                <ul class="nav side-menu">
+                    <li><a href="{{ route('history.index') }}">History</a></li>
+                </ul>
+            </div>
+            <div class="menu_section">
                 <h3>Layout</h3>
                 <ul class="nav side-menu">
                     <li><a href="{{ route('header.index') }}">Header</a></li>

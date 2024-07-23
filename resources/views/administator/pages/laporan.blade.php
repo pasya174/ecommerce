@@ -6,15 +6,19 @@
         <div class="">
             <div class="page-title">
                 <div class="title_left">
-                    <h3>Transaction Management</h3>
+                    <h3>Laporan</h3>
                 </div>
 
-                {{-- <div class="title_right">
+                <div class="title_right">
                     <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
-                        <button class="btn btn-outline-primary btn-sm" data-toggle="modal" data-target="#modalAdd">Add
-                            Product</button>
+                        <form id="filter-form" method="get" style="float: right;"
+                            class="d-flex justify-content-center align-items-center">
+                            <input type="date" class="form-control mr-2 rounded" name="date"
+                                value="{{ !empty($filter_date) ? $filter_date : null }}" id="dateInput">
+                            <button type="submit" class="btn btn-primary mt-1">Filter</button>
+                        </form>
                     </div>
-                </div> --}}
+                </div>
             </div>
 
             <div class="col-md-12 col-sm-12 ">
@@ -33,13 +37,13 @@
                                                 <th>Kota</th>
                                                 <th>Kecamatan</th>
                                                 <th>Kelurahan</th>
+                                                <th>Total</th>
                                                 <th>Detail</th>
-                                                <th>Image</th>
-                                                <th>Action</th>
+                                                <th>Print</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach ($data->where('payment_status', false) as $item)
+                                            @foreach ($data->where('payment_status', true) as $item)
                                                 <tr>
                                                     <td>{{ $loop->iteration }}</td>
                                                     <td>{{ $item->user[0]->username }}</td>
@@ -47,21 +51,18 @@
                                                     <td>{{ $item->city }}</td>
                                                     <td>{{ $item->kecamatan }}</td>
                                                     <td>{{ $item->kelurahan }}</td>
-                                                    <td>{{ $item->user[0]->username }}</td>
+                                                    <td>{{ number_format($item->total_amount) }}</td>
                                                     <td>
-                                                        <a href="#" data-toggle="modal"
-                                                            data-target="#modalImage{{ $item->id }}">
-                                                            <img src="{{ asset('storage/uploads/images/checkout/') . '/' . $item->proof_of_payment }}"
-                                                                alt="" style="height: 250px;">
+                                                        <a href="#" class="btn btn-success btn-sm" data-toggle="modal"
+                                                            data-target="#modalDetail{{ $item->id }}">
+                                                            <i class="fa fa-info-circle"></i>
                                                         </a>
                                                     </td>
-                                                    <td><button class="btn btn-outline-info btn-sm" data-toggle="modal"
-                                                            data-target="#modalDetail{{ $item->id }}"><i
-                                                                class="fa fa-info"></i></button>
-                                                        <button class="btn btn-outline-success btn-sm" data-toggle="modal"
-                                                            data-target="#modalAccept{{ $item->id }}">Accept</button>
-                                                        <button class="btn btn-outline-danger btn-sm" data-toggle="modal"
-                                                            data-target="#modalReject{{ $item->id }}">Reject</button>
+                                                    <td>
+                                                        <a href="{{ route('laporan.print', $item->id) }}"
+                                                            class="btn btn-success btn-sm" target="_blank">
+                                                            <i class="fa fa-print"></i>
+                                                        </a>
                                                     </td>
                                                 </tr>
                                             @endforeach
@@ -77,80 +78,6 @@
     </div>
     </div>
     <!-- /page content -->
-
-    {{-- <div class="modal fade" id="modalAdd" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Add Product</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form action="{{ route('product.store') }}" method="post" enctype="multipart/form-data">
-                        @csrf
-                        <div class="form-group mb-3">
-                            <label for="name">Name:</label>
-                            <input type="text" class="form-control mt-1" name="name" placeholder="Name"
-                                value="{{ old('name') }}" required>
-                        </div>
-                        <div class="form-group mb-3">
-                            <label for="description">Description:</label>
-                            <textarea name="description" class="form-control mt-1" id="" cols="10" rows="4" required>{{ old('description') }}</textarea>
-                        </div>
-                        <div class="form-group mb-3">
-                            <label for="price">Price:</label>
-                            <input type="number" class="form-control mt-1" name="price" placeholder="Price" required
-                                value="{{ old('price') }}">
-                        </div>
-                        <div class="form-group mb-3">
-                            <label for="color">Color:</label>
-                            <input type="text" class="form-control mt-1" name="color" placeholder="color" required
-                                value="{{ old('color') }}">
-                        </div>
-                        <div class="form-group mb-3">
-                            <label for="stock">Stock:</label>
-                            <input type="number" class="form-control mt-1" name="stock" placeholder="stock" required
-                                value="{{ old('stock') }}">
-                        </div>
-                        <div class="form-group mb-3">
-                            <label for="image">Image Products:</label>
-                            <input type="file" class="form-control mt-1" name="image" placeholder="image" required
-                                value="{{ old('image') }}">
-                        </div>
-                        <div class="form-group mb-3">
-                            <label for="category_id">Category:</label>
-                            <select name="category_id" id="category_id" class="custom-select" required>
-                                <option selected hidden>Choose category</option>
-                                @foreach ($categories as $item)
-                                    <option {{ old('category_id') == $item->id ? 'selected' : '' }}
-                                        value="{{ $item->id }}">{{ $item->name }}
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="form-group mb-3">
-                            <label for="size">Size:</label>
-                            <select name="size" id="size" class="custom-select" required>
-                                <option selected hidden>Choose size</option>
-                                <option {{ old('size') == 'm' ? 'selected' : '' }} value="m">M</option>
-                                <option {{ old('size') == 'l' ? 'selected' : '' }} value="l">L</option>
-                                <option {{ old('size') == 'xl' ? 'selected' : '' }} value="xl">xl</option>
-                            </select>
-                        </div>
-                        <div class="d-flex justify-content-end">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary">Save changes</button>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                </div>
-            </div>
-        </div>
-    </div> --}}
 
     @foreach ($data as $item)
         <div class="modal fade" id="modalDetail{{ $item->id }}" tabindex="-1" role="dialog"
@@ -173,6 +100,7 @@
                                         <th>Price</th>
                                         <th>Size</th>
                                         <th>Color</th>
+                                        <th>Price</th>
                                         <th>Quantity</th>
                                     </tr>
                                 </thead>
@@ -182,12 +110,12 @@
                                     @endphp
                                     @foreach ($data_detail->where('transaction_id', $item->id) as $row)
                                         <tr>
-                                            {{-- <td>pokkeke</td> --}}
                                             <td>{{ $loop->iteration }}</td>
                                             <td>{{ $row->name }}</td>
                                             <td>{{ $row->price }}</td>
                                             <td>{{ $row->size }}</td>
                                             <td>{{ $row->color }}</td>
+                                            <td>{{ number_format($row->price) }}</td>
                                             <td>{{ $row->quantity }}</td>
                                         </tr>
                                     @endforeach

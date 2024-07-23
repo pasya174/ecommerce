@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\Admin\Auth\LoginController;
+use App\Http\Controllers\Admin\HistoryController;
+use App\Http\Controllers\Admin\LaporanContoller;
 use App\Http\Controllers\Admin\ProductsController;
 use App\Http\Controllers\Admin\TransactionController as AdminTransactionController;
 use App\Http\Controllers\AuthController;
@@ -101,6 +103,20 @@ Route::group([
         Route::get('', [AdminTransactionController::class, 'index'])->name('transaction.index');
         Route::post('is-accept', [AdminTransactionController::class, 'isAccept'])->name('transaction.is-accept');
         Route::post('is-reject', [AdminTransactionController::class, 'isReject'])->name('transaction.is-reject');
+    });
+
+    Route::group([
+        'prefix' => 'laporan',
+    ], function () {
+        Route::get('', [LaporanContoller::class, 'index'])->name('laporan.index');
+        Route::get('print/{id}', [LaporanContoller::class, 'print'])->name('laporan.print');
+    });
+
+    Route::group([
+        'prefix' => "history",
+    ], function () {
+        Route::get('', [HistoryController::class, 'index'])->name('history.index');
+        Route::get('{user_id}', [HistoryController::class, 'detail'])->name('history.detail');
     });
 
     Route::group([
