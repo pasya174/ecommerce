@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\Auth\LoginController;
 use App\Http\Controllers\Admin\HistoryController;
 use App\Http\Controllers\Admin\LaporanContoller;
+use App\Http\Controllers\Admin\PerbandinganController;
 use App\Http\Controllers\Admin\ProductsController;
 use App\Http\Controllers\Admin\TransactionController as AdminTransactionController;
 use App\Http\Controllers\AuthController;
@@ -126,6 +127,12 @@ Route::group([
         Route::post('', [HeaderController::class, 'store'])->name('header.store');
         Route::post('update', [HeaderController::class, 'update'])->name('header.update');
         Route::post('delete', [HeaderController::class, 'delete'])->name('header.delete');
+    });
+
+    Route::group([
+        'prefix' => 'perbandingan'
+    ], function () {
+        Route::get('', [PerbandinganController::class, 'index'])->name('perbandingan.index');
     });
 });
 

@@ -17,6 +17,8 @@ class DatabaseSeeder extends Seeder
             ProductsSeeder::class,
             CategoriesSeeder::class,
             ProductDetailsSeeder::class,
+            TransactionsOldSeeder::class,
+            TransactionDetailsOldSeeder::class,
             // TransactionsSeeder::class,
             // TransactionsDetailsSeeder::class,
         ]);
