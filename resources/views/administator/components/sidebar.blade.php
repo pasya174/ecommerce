@@ -52,6 +52,12 @@
                     <li><a href="{{ route('perbandingan.index') }}">Perbandingan</a></li>
                 </ul>
             </div>
+            <div class="menu_section">
+                <h3>Revenue</h3>
+                <ul class="nav side-menu">
+                    <li><a href="{{ route('revenue.index') }}">Revenue</a></li>
+                </ul>
+            </div>
         </div>
         <!-- /sidebar menu -->
 

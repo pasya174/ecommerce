@@ -15,6 +15,6 @@ class TransactionDetailsOldSeeder extends Seeder
      */
     public function run(): void
     {
-        TransactionDetailsOld::factory(1000)->create();
+        TransactionDetailsOld::factory(500)->create();
     }
 }

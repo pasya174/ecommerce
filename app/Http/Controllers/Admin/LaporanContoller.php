@@ -10,6 +10,41 @@ use Illuminate\Support\Facades\Http;
 
 class LaporanContoller extends Controller
 {
+    public function detail($user_id)
+    {
+        $data = $this->data(null, null, $user_id);
+        $data_detail = $this->data_detail();
+
+        $filter_date = false;
+        if (!empty($_REQUEST['date'])) {
+            $date = $_REQUEST['date'];
+
+            $data = $this->data($date);
+            $data_detail = $this->data_detail($date);
+            $filter_date = $date;
+        }
+
+        foreach ($data as $item) {
+            if (!$item->kelurahan == 0) {
+                $item->kelurahan = $this->village($item->kecamatan);
+                $item->kecamatan = $this->district($item->city);
+                $item->city = $this->city($item->province);
+                $item->province = $this->province($item->province);
+            } else {
+                $item->kelurahan = '-';
+                $item->kecamatan = '-';
+                $item->city = '-';
+                $item->province = '-';
+            }
+        }
+
+        return view('administator.pages.laporan-detail', compact(
+            'data',
+            'data_detail',
+            'filter_date'
+        ));
+    }
+
     public function index()
     {
         $data = $this->data();
@@ -54,11 +89,21 @@ class LaporanContoller extends Controller
         return view('administator.pages.print', compact('data', 'data_detail'));
     }
 
-    public function data($date = null, $id = null)
+    public function data($date = null, $id = null, $user_id = null)
     {
-        $query = Transactions::with('user')
-            ->where('status', 1)
-            ->whereNotNull('payment_status');
+        if ($user_id != null) {
+            $query = Transactions::with('user')
+                ->where('status', 1)
+                ->whereNotNull('payment_status');
+            $query->where('user_id', $user_id);
+        } else {
+            $query = Transactions::selectRaw('*, SUM(total_amount) as total_amount')
+                ->with('user')
+                ->where('status', 1)
+                ->whereNotNull('payment_status');
+            $query->groupBy('user_id');
+        }
+
         if (!empty($id)) {
             $query->where('id', $id);
         }
@@ -68,6 +113,7 @@ class LaporanContoller extends Controller
         }
 
         $data = $query->get();
+        // dd($data);
 
         return $data;
     }
