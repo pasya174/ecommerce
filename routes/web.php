@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\HistoryController;
 use App\Http\Controllers\Admin\LaporanContoller;
 use App\Http\Controllers\Admin\PerbandinganController;
 use App\Http\Controllers\Admin\ProductsController;
+use App\Http\Controllers\Admin\RevenueController;
 use App\Http\Controllers\Admin\TransactionController as AdminTransactionController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoriesController;
@@ -110,6 +111,7 @@ Route::group([
         'prefix' => 'laporan',
     ], function () {
         Route::get('', [LaporanContoller::class, 'index'])->name('laporan.index');
+        Route::get('detail/{user_id}', [LaporanContoller::class, 'detail'])->name('laporan.detail');
         Route::get('print/{id}', [LaporanContoller::class, 'print'])->name('laporan.print');
     });
 
@@ -133,6 +135,12 @@ Route::group([
         'prefix' => 'perbandingan'
     ], function () {
         Route::get('', [PerbandinganController::class, 'index'])->name('perbandingan.index');
+    });
+
+    Route::group([
+        'prefix' => 'revenue',
+    ], function () {
+        Route::get('', [RevenueController::class, 'index'])->name('revenue.index');
     });
 });
 

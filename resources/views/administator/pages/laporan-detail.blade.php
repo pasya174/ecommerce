@@ -6,15 +6,19 @@
         <div class="">
             <div class="page-title">
                 <div class="title_left">
-                    <h3>Transaction Management</h3>
+                    <h3>Laporan</h3>
                 </div>
 
-                {{-- <div class="title_right">
+                <div class="title_right">
                     <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
-                        <button class="btn btn-outline-primary btn-sm" data-toggle="modal" data-target="#modalAdd">Add
-                            Product</button>
+                        <form id="filter-form" method="get" style="float: right;"
+                            class="d-flex justify-content-center align-items-center">
+                            <input type="date" class="form-control mr-2 rounded" name="date"
+                                value="{{ !empty($filter_date) ? $filter_date : null }}" id="dateInput">
+                            <button type="submit" class="btn btn-primary mt-1">Filter</button>
+                        </form>
                     </div>
-                </div> --}}
+                </div>
             </div>
 
             <div class="col-md-12 col-sm-12 ">
@@ -33,13 +37,17 @@
                                                 <th>Kota</th>
                                                 <th>Kecamatan</th>
                                                 <th>Kelurahan</th>
+                                                <th>Total</th>
                                                 <th>Detail</th>
-                                                <th>Image</th>
-                                                <th>Action</th>
+                                                <th>Print</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach ($data->where('payment_status', false) as $item)
+                                            @php $totalPrice = 0; @endphp
+                                            @foreach ($data->where('payment_status', true) as $item)
+                                                @php
+                                                    $totalPrice += $item->total_amount;
+                                                @endphp
                                                 <tr>
                                                     <td>{{ $loop->iteration }}</td>
                                                     <td>{{ $item->user[0]->username }}</td>
@@ -47,25 +55,30 @@
                                                     <td>{{ $item->city }}</td>
                                                     <td>{{ $item->kecamatan }}</td>
                                                     <td>{{ $item->kelurahan }}</td>
-                                                    <td>{{ $item->user[0]->username }}</td>
+                                                    <td>{{ number_format($item->total_amount) }}</td>
                                                     <td>
-                                                        <a href="#" data-toggle="modal"
-                                                            data-target="#modalImage{{ $item->id }}">
-                                                            <img src="{{ asset('storage/uploads/images/checkout/') . '/' . $item->proof_of_payment }}"
-                                                                alt="" style="height: 250px;">
+                                                        <a href="#" class="btn btn-success btn-sm" data-toggle="modal"
+                                                            data-target="#modalDetail{{ $item->id }}">
+                                                            <i class="fa fa-info-circle"></i>
                                                         </a>
                                                     </td>
-                                                    <td><button class="btn btn-outline-info btn-sm" data-toggle="modal"
-                                                            data-target="#modalDetail{{ $item->id }}"><i
-                                                                class="fa fa-info"></i></button>
-                                                        <button class="btn btn-outline-success btn-sm" data-toggle="modal"
-                                                            data-target="#modalAccept{{ $item->id }}">Accept</button>
-                                                        <button class="btn btn-outline-danger btn-sm" data-toggle="modal"
-                                                            data-target="#modalReject{{ $item->id }}">Reject</button>
+                                                    <td>
+                                                        <a href="{{ route('laporan.print', $item->id) }}"
+                                                            class="btn btn-success btn-sm" target="_blank">
+                                                            <i class="fa fa-print"></i>
+                                                        </a>
                                                     </td>
                                                 </tr>
                                             @endforeach
                                         </tbody>
+                                        <tfoot>
+                                            <tr>
+                                                <td colspan="6" class="text-right"><strong>Total Price:</strong></td>
+                                                <td><strong>{{ number_format($totalPrice) }}</strong></td>
+                                                <td></td>
+                                                <td></td>
+                                            </tr>
+                                        </tfoot>
                                     </table>
                                 </div>
                             </div>
@@ -75,8 +88,8 @@
             </div>
         </div>
     </div>
-    {{-- </div> --}}
-
+    </div>
+    <!-- /page content -->
 
     @foreach ($data as $item)
         <div class="modal fade" id="modalDetail{{ $item->id }}" tabindex="-1" role="dialog"
@@ -99,35 +112,26 @@
                                         <th>Price</th>
                                         <th>Size</th>
                                         <th>Color</th>
+                                        <th>Price</th>
                                         <th>Quantity</th>
-                                        <th>Total Price</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @php $totalPrice = 0; @endphp
+                                    @php
+                                        // dd($data_detail->where('transaction_id', $item->id));
+                                    @endphp
                                     @foreach ($data_detail->where('transaction_id', $item->id) as $row)
-                                        @php
-                                            $rowTotal = $row->quantity * $row->price;
-                                            $totalPrice += $rowTotal;
-                                        @endphp
                                         <tr>
-                                            {{-- <td>pokkeke</td> --}}
                                             <td>{{ $loop->iteration }}</td>
                                             <td>{{ $row->name }}</td>
-                                            <td>{{ number_format($row->price) }}</td>
+                                            <td>{{ $row->price }}</td>
                                             <td>{{ $row->size }}</td>
                                             <td>{{ $row->color }}</td>
+                                            <td>{{ number_format($row->price) }}</td>
                                             <td>{{ $row->quantity }}</td>
-                                            <td>{{ number_format($row->quantity * $row->price) }}</td>
                                         </tr>
                                     @endforeach
                                 </tbody>
-                                <tfoot>
-                                    <tr>
-                                        <td colspan="6" class="text-right"><strong>Total Price:</strong></td>
-                                        <td><strong>{{ number_format($totalPrice) }}</strong></td>
-                                    </tr>
-                                </tfoot>
                             </table>
                         </div>
                     </div>

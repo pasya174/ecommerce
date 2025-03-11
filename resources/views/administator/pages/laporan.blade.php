@@ -39,11 +39,14 @@
                                                 <th>Kelurahan</th>
                                                 <th>Total</th>
                                                 <th>Detail</th>
-                                                <th>Print</th>
                                             </tr>
                                         </thead>
                                         <tbody>
+                                            @php $totalPrice = 0; @endphp
                                             @foreach ($data->where('payment_status', true) as $item)
+                                                @php
+                                                    $totalPrice += $item->total_amount;
+                                                @endphp
                                                 <tr>
                                                     <td>{{ $loop->iteration }}</td>
                                                     <td>{{ $item->user[0]->username }}</td>
@@ -53,20 +56,21 @@
                                                     <td>{{ $item->kelurahan }}</td>
                                                     <td>{{ number_format($item->total_amount) }}</td>
                                                     <td>
-                                                        <a href="#" class="btn btn-success btn-sm" data-toggle="modal"
-                                                            data-target="#modalDetail{{ $item->id }}">
+                                                        <a href="{{ route('laporan.detail', $item->user_id) }}"
+                                                            class="btn btn-success btn-sm">
                                                             <i class="fa fa-info-circle"></i>
-                                                        </a>
-                                                    </td>
-                                                    <td>
-                                                        <a href="{{ route('laporan.print', $item->id) }}"
-                                                            class="btn btn-success btn-sm" target="_blank">
-                                                            <i class="fa fa-print"></i>
                                                         </a>
                                                     </td>
                                                 </tr>
                                             @endforeach
                                         </tbody>
+                                        <tfoot>
+                                            <tr>
+                                                <td colspan="6" class="text-right"><strong>Total Price:</strong></td>
+                                                <td><strong>{{ number_format($totalPrice) }}</strong></td>
+                                                <td></td>
+                                            </tr>
+                                        </tfoot>
                                     </table>
                                 </div>
                             </div>
