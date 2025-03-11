@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+set_time_limit(300);
+
 use App\Models\TransactionDetailsOld;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
